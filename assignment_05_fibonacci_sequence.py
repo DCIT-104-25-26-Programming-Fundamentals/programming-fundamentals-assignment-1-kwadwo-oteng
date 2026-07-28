@@ -49,3 +49,70 @@
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
 # =============================================================================
 
+def generate_fibonacci(n):
+    """Return a list of the first n Fibonacci numbers using a loop."""
+    sequence = []
+    a, b = 0, 1
+
+    for _ in range(n):
+        sequence.append(a)
+        a, b = b, a + b
+
+    return sequence
+
+
+def is_fibonacci(number):
+    """Return True if 'number' appears in the Fibonacci sequence."""
+    if number < 0:
+        return False
+
+    a, b = 0, 1
+    while a <= number:
+        if a == number:
+            return True
+        a, b = b, a + b
+
+    return False
+
+
+def part_a_print_terms():
+    n = int(input("How many terms? "))
+
+    if n <= 0:
+        print("Error: N must be a positive integer.")
+        return
+
+    sequence = generate_fibonacci(n)
+    print("Fibonacci sequence:", " ".join(str(num) for num in sequence))
+
+
+def part_b_check_membership():
+    number = int(input("Enter a number to check: "))
+
+    if is_fibonacci(number):
+        print(f"{number} is a Fibonacci number.")
+    else:
+        print(f"{number} is NOT a Fibonacci number.")
+
+
+def main():
+    while True:
+        print("\nFibonacci Sequence Menu")
+        print("A. Print the first N terms")
+        print("B. Check if a number is a Fibonacci number")
+        print("Q. Quit")
+
+        choice = input("Choose an option: ").strip().upper()
+
+        if choice == "A":
+            part_a_print_terms()
+        elif choice == "B":
+            part_b_check_membership()
+        elif choice == "Q":
+            break
+        else:
+            print("Invalid option. Please choose A, B, or Q.")
+
+
+if __name__ == "__main__":
+    main()

@@ -60,3 +60,146 @@
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
 # =============================================================================
 
+
+def read_matrix(rows, cols, label=""):
+    """Read a rows x cols matrix from the user, one row per line."""
+    print(f"\nEnter matrix {label} ({rows} x {cols}):")
+    matrix = []
+    for i in range(rows):
+        while True:
+            entries = input(f"Enter row {i + 1}: ").split()
+            if len(entries) != cols:
+                print(f"Error: expected {cols} values, got {len(entries)}. Try again.")
+                continue
+            matrix.append([float(value) for value in entries])
+            break
+    return matrix
+
+
+def display_matrix(matrix, title="Matrix"):
+    """Print a matrix in a neat, aligned grid."""
+    print(f"\n{title}:")
+    for row in matrix:
+        formatted_row = "  ".join(f"{value:g}" for value in row)
+        print(formatted_row)
+
+
+def transpose_matrix(matrix):
+    """Return the transpose of 'matrix' using nested loops."""
+    rows = len(matrix)
+    cols = len(matrix[0])
+
+    result = [[0 for _ in range(rows)] for _ in range(cols)]
+
+    for i in range(rows):
+        for j in range(cols):
+            result[j][i] = matrix[i][j]
+
+    return result
+
+
+def add_matrices(a, b):
+    """Return the element-wise sum of two same-sized matrices."""
+    rows = len(a)
+    cols = len(a[0])
+
+    result = [[0 for _ in range(cols)] for _ in range(rows)]
+
+    for i in range(rows):
+        for j in range(cols):
+            result[i][j] = a[i][j] + b[i][j]
+
+    return result
+
+
+def multiply_matrices(a, b):
+    """Return the matrix product A x B using nested loops."""
+    rows_a = len(a)
+    cols_a = len(a[0])
+    cols_b = len(b[0])
+
+    result = [[0 for _ in range(cols_b)] for _ in range(rows_a)]
+
+    for i in range(rows_a):
+        for j in range(cols_b):
+            total = 0
+            for k in range(cols_a):
+                total += a[i][k] * b[k][j]
+            result[i][j] = total
+
+    return result
+
+
+def get_positive_int(prompt):
+    """Read a positive integer from the user, re-prompting on invalid input."""
+    while True:
+        value = int(input(prompt))
+        if value > 0:
+            return value
+        print("Error: value must be a positive integer.")
+
+
+def part_a_transpose():
+    rows = get_positive_int("Enter number of rows: ")
+    cols = get_positive_int("Enter number of columns: ")
+
+    matrix = read_matrix(rows, cols)
+    result = transpose_matrix(matrix)
+
+    display_matrix(matrix, "Original Matrix")
+    display_matrix(result, "Transposed Matrix")
+
+
+def part_b_add():
+    rows = get_positive_int("Enter number of rows: ")
+    cols = get_positive_int("Enter number of columns: ")
+
+    matrix_a = read_matrix(rows, cols, "A")
+    matrix_b = read_matrix(rows, cols, "B")
+    result = add_matrices(matrix_a, matrix_b)
+
+    display_matrix(matrix_a, "Matrix A")
+    display_matrix(matrix_b, "Matrix B")
+    display_matrix(result, "A + B")
+
+
+def part_c_multiply():
+    rows_a = get_positive_int("Enter number of rows for Matrix A: ")
+    cols_a = get_positive_int("Enter number of columns for Matrix A: ")
+    rows_b = cols_a
+    print(f"(Matrix B must have {rows_b} rows to match Matrix A's columns.)")
+    cols_b = get_positive_int("Enter number of columns for Matrix B: ")
+
+    matrix_a = read_matrix(rows_a, cols_a, "A")
+    matrix_b = read_matrix(rows_b, cols_b, "B")
+    result = multiply_matrices(matrix_a, matrix_b)
+
+    display_matrix(matrix_a, "Matrix A")
+    display_matrix(matrix_b, "Matrix B")
+    display_matrix(result, "A x B")
+
+
+def main():
+    while True:
+        print("\nMatrix Operations Menu")
+        print("A. Transpose a Matrix")
+        print("B. Add Two Matrices")
+        print("C. Multiply Two Matrices")
+        print("Q. Quit")
+
+        choice = input("Choose an option: ").strip().upper()
+
+        if choice == "A":
+            part_a_transpose()
+        elif choice == "B":
+            part_b_add()
+        elif choice == "C":
+            part_c_multiply()
+        elif choice == "Q":
+            break
+        else:
+            print("Invalid option. Please choose A, B, C, or Q.")
+
+
+if __name__ == "__main__":
+    main()
